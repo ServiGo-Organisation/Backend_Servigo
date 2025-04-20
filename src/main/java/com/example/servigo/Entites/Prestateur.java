@@ -11,6 +11,6 @@ import java.util.List;
 public class Prestateur extends Utilisateur {
     private double solde;
 
-    @OneToMany(mappedBy = "serveur")
+    @OneToMany(mappedBy = "prestateur")
     private List<Service> services;
 }
