@@ -50,11 +50,14 @@ public class SecurityConfig {
                                 "/api/v1/utilisateur/addUtilisateur",
                                 "/oauth2/**", // Pour Google login si jamais nécessaire
                                 "/swagger-ui/**",
-                                "/v3/api-docs/**"
+                                "/v3/api-docs/**",
+                                "/assets/userProfile/**",
+                                "/assets/servicesImages/**"
+
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
-                .oauth2Login(oauth2 -> oauth2.defaultSuccessUrl(FRONTEND_URL + "/auth/google/callback", true))
+//                .oauth2Login(oauth2 -> oauth2.defaultSuccessUrl(FRONTEND_URL + "/auth/google/callback", true))
                 .oauth2ResourceServer(oa -> oa.jwt(Customizer.withDefaults()))
                 .logout(logout -> logout
                         .logoutUrl("/logout")

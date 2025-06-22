@@ -1,5 +1,6 @@
 package com.example.servigo.Entites;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -12,7 +13,9 @@ public class Service {
 
     private String nom;
     private String description;
+    private String serviceImage;
 
     @ManyToOne
+    @JsonBackReference
     private Prestateur prestateur;
 }

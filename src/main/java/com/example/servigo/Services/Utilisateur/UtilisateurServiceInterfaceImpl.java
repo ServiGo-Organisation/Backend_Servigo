@@ -3,14 +3,17 @@ package com.example.servigo.Services.Utilisateur;
 
 import com.example.servigo.Entites.Client;
 import com.example.servigo.Entites.Prestateur;
+import com.example.servigo.Entites.PrestateurClient;
 import com.example.servigo.Entites.Utilisateur;
 import com.example.servigo.Enums.TypeUtilisateur;
 import com.example.servigo.Repositories.ClientRepository;
 import com.example.servigo.Repositories.PrestateurRepository;
 import com.example.servigo.Repositories.UtilisateurRepository;
+import jdk.jshell.execution.Util;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -42,35 +45,46 @@ public class UtilisateurServiceInterfaceImpl implements UtilisateurServiceInterf
             throw new IllegalArgumentException("Le mot de passe est requis.");
         }
 
-        if (utilisateur.getTypeUtilisateur() == null) {
-            throw new IllegalArgumentException("Le type d'utilisateur est requis.");
-        }
-
         // Vérifier si l'utilisateur existe déjà
-        if (utilisateurRepository.findByEmail(utilisateur.getEmail()) != null) {
-            throw new IllegalArgumentException("Un utilisateur avec cet email existe déjà.");
-        }
+//        if (utilisateurRepository.findByEmail(utilisateur.getEmail()) != null) {
+//            throw new IllegalArgumentException("Un utilisateur avec cet email existe déjà.");
+//        }
 
         // Hachage du mot de passe
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         utilisateur.setMotDePasse(encoder.encode(utilisateur.getMotDePasse()));
 
-        // Créer l’utilisateur selon son type
+        // Gestion par type
+        Utilisateur utilisateurCree = null;
+
+
         switch (utilisateur.getTypeUtilisateur()) {
             case CLIENT:
                 Client client = new Client();
                 copyCommonFields(utilisateur, client);
-                return clientRepository.save(client); // insère dans utilisateur + client
+                utilisateurCree = clientRepository.save(client); // insert dans utilisateur + client
+                break;
 
             case PRESTATAIRE:
                 Prestateur prestateur = new Prestateur();
                 copyCommonFields(utilisateur, prestateur);
-                return prestateurRepository.save(prestateur); // insère dans utilisateur + prestateur
+                utilisateurCree = prestateurRepository.save(prestateur); // insert dans utilisateur + prestateur
+                break;
 
+            case PRESTATEUR_CLIENT:
+                PrestateurClient both = new PrestateurClient();
+                copyCommonFields(utilisateur, both);
+                utilisateurCree = utilisateurRepository.save(both); // insert dans utilisateur + prestateur_client
+                break;
             default:
-                throw new IllegalArgumentException("Type d'utilisateur non reconnu.");
+                // Si pas de type, on enregistre comme simple utilisateur
+                utilisateurCree = utilisateurRepository.save(utilisateur);
         }
+
+        return utilisateurCree;
     }
+
+
     private void copyCommonFields(Utilisateur source, Utilisateur target) {
         target.setNom(source.getNom());
         target.setPrenom(source.getPrenom());
@@ -80,6 +94,7 @@ public class UtilisateurServiceInterfaceImpl implements UtilisateurServiceInterf
         target.setGenre(source.getGenre());
         target.setDateNaissance(source.getDateNaissance());
         target.setTypeUtilisateur(source.getTypeUtilisateur());
+        target.setUserImage(source.getUserImage());
     }
 
     @Override
@@ -88,6 +103,10 @@ public class UtilisateurServiceInterfaceImpl implements UtilisateurServiceInterf
         return userInfo;
     }
 
+    @Override
+    public Utilisateur getUserInformations(Long idUtilisateur) {
+        return utilisateurRepository.findByIdUtilisateur(idUtilisateur);
+    }
 
 
 }
