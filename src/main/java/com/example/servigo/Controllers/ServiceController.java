@@ -1,5 +1,6 @@
 package com.example.servigo.Controllers;
 
+import com.example.servigo.DTOs.ServiceDTO;
 import com.example.servigo.Entites.Service;
 import com.example.servigo.Services.Service.ServicesServiceInterface;
 import lombok.AllArgsConstructor;
@@ -30,10 +31,11 @@ public class ServiceController {
                     .body("Erreur lors de la création du service : " + e.getMessage());
         }
     }
+
     @GetMapping("/getAllServices")
-    public ResponseEntity<List<Service>> getAllServices() {
+    public ResponseEntity<List<ServiceDTO>> getAllServices() {
         try {
-            List<Service> services = servicesServiceInterface.getAllServices();
+            List<ServiceDTO> services = servicesServiceInterface.getAllServices();
             return ResponseEntity.ok(services);
         } catch (Exception e) {
             e.printStackTrace();
@@ -41,5 +43,6 @@ public class ServiceController {
                     .body(null);
         }
     }
+
 
 }

@@ -1,8 +1,12 @@
 package com.example.servigo.Entites;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Entity
@@ -15,7 +19,6 @@ public class Service {
     private String description;
     private String serviceImage;
 
-    @ManyToOne
-    @JsonBackReference
-    private Prestateur prestateur;
+    @ManyToMany(mappedBy = "services")
+    private Set<Prestateur> prestateurs = new HashSet<>();
 }
