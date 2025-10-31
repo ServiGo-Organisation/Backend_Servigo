@@ -85,7 +85,6 @@
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
             }
         }
-        // API 1: Lister tous les sous-services d'un service
         @GetMapping("/{serviceId}/sous-services")
         public ResponseEntity<?> getSousServicesByService(@PathVariable Long serviceId) {
             try {
