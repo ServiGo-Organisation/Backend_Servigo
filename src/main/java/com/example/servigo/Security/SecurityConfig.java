@@ -45,10 +45,10 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/api/login",
+                                "/api/login", // Autorise ta route de login personnalisée
                                 "/auth/login/**",
                                 "/api/v1/utilisateur/addUtilisateur",
-                                "/oauth2/**",
+                                "/oauth2/**", // Pour Google login si jamais nécessaire
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/assets/userProfile/**",
@@ -72,6 +72,7 @@ public class SecurityConfig {
 
                         .anyRequest().authenticated()
                 )
+//                .oauth2Login(oauth2 -> oauth2.defaultSuccessUrl(FRONTEND_URL + "/auth/google/callback", true))
                 .oauth2ResourceServer(oa -> oa.jwt(Customizer.withDefaults()))
                 .logout(logout -> logout
                         .logoutUrl("/logout")
@@ -93,9 +94,9 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOrigins(List.of(
-                "http://192.168.43.43:19000",
-                "http://192.168.43.43:8081",
-                "http://localhost:5173"
+                "http://192.168.1.17:19000",  // Expo Go (mobile)
+                "http://192.168.1.17:8081",  // Si tu testes le front dans le navigateur
+                "http://localhost:5173"       // Pour tests local React/Vite
         ));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));

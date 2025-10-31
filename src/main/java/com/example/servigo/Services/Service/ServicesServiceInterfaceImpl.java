@@ -8,8 +8,8 @@ import com.example.servigo.Repositories.PrestateurRepository;
 import com.example.servigo.Repositories.ServiceRepository;
 import com.example.servigo.Repositories.SousServiceRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -88,6 +88,7 @@ public class ServicesServiceInterfaceImpl implements ServicesServiceInterface {
             }
         }
 
+
         // Calculer la somme des montants
         Double montantTotal = sousServicesSelectionnes.stream()
                 .mapToDouble(SousService::getMontant)
@@ -110,6 +111,10 @@ public class ServicesServiceInterfaceImpl implements ServicesServiceInterface {
         Service service = serviceRepository.findByNom(nomService)
                 .orElseThrow(() -> new RuntimeException("Service non trouvé: " + nomService));
         return prestateurRepository.findByServicesContaining(service);
+    }
+    @Override
+    public List<Prestateur> getPrestateursByServiceName(String serviceName) {
+        return prestateurRepository.findByRolesIgnoreCase(serviceName);
     }
 }
 

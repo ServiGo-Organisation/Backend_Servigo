@@ -9,4 +9,6 @@ public interface LocationServiceInterface {
     void saveOrUpdateLocation(Long userId, double latitude, double longitude);
     List<Localisation> getAllLocations();
     Optional<Localisation> getLocationByUserId(Long userId);
+    List<Localisation> getPrestatairesProches(Long clientId, double rayonKm);
+
 }

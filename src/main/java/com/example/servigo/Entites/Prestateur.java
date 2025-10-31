@@ -1,5 +1,6 @@
 package com.example.servigo.Entites;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -15,6 +16,7 @@ import java.util.Set;
 public class Prestateur extends Utilisateur {
     private double solde;
 
+
     @ManyToMany
     @JoinTable(
             name = "prestateur_services",
@@ -23,5 +25,6 @@ public class Prestateur extends Utilisateur {
     )
     private Set<Service> services = new HashSet<>();
 
+    private String roles;
 
 }

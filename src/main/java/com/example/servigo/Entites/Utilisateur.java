@@ -31,6 +31,8 @@ public class Utilisateur {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date dateNaissance;
     private String userImage;
+    private String ville;
+    private boolean is_online;// default is false sure ?
     @Enumerated(EnumType.STRING)
     private TypeUtilisateur typeUtilisateur=null;
 }

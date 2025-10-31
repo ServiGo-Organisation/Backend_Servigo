@@ -12,6 +12,10 @@ import java.util.Optional;
 
 public interface ServicesServiceInterface {
 //    public void addService(String serviceJson, MultipartFile file) throws IOException;
+   // Service addService(String serviceJson, MultipartFile file) throws IOException;
+
+    List<Prestateur> getPrestateursByServiceName(String serviceName);
+
     Service createService(Service service);
     List<Service> getAllServices();
         Optional<Service> getServiceByName(String nomService);
