@@ -10,6 +10,7 @@ import java.util.Optional;
 
 public interface LocalisationRepository extends JpaRepository<Localisation,Long> {
     Optional<Localisation> findByUtilisateur(Utilisateur utilisateur);
+    Optional<Localisation> findByUtilisateurIdUtilisateur(Long idUser);
     @Query("SELECT l FROM Localisation l WHERE l.utilisateur.typeUtilisateur = 'PRESTATAIRE'")
     List<Localisation> findAllPrestateurs();
 }

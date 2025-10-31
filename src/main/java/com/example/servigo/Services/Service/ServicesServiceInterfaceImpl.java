@@ -63,20 +63,18 @@ public Service addService(String serviceJson, MultipartFile file) throws IOExcep
     service = serviceRepository.save(service);
 
     // Associer le service aux prestataires (côté propriétaire)
-    if (serviceData.getPrestateurs() != null) {
-        for (Prestateur p : serviceData.getPrestateurs()) {
-            Prestateur prestateur = prestateurRepository.findByIdUtilisateur(p.getIdUtilisateur());
-            if (prestateur != null) {
-                prestateur.getServices().add(service); // ✅ côté propriétaire
-                prestateurRepository.save(prestateur);
-            }
-        }
-    }
+//    if (serviceData.getPrestateurs() != null) {
+//        for (Prestateur p : serviceData.getPrestateurs()) {
+//            Prestateur prestateur = prestateurRepository.findByIdUtilisateur(p.getIdUtilisateur());
+//            if (prestateur != null) {
+//                prestateur.getServices().add(service); // ✅ côté propriétaire
+//                prestateurRepository.save(prestateur);
+//            }
+//        }
+//    }
 
     return service;
 }
-
-
 
     @Override
     public List<ServiceDTO> getAllServices() {
@@ -88,11 +86,11 @@ public Service addService(String serviceJson, MultipartFile file) throws IOExcep
             dto.setServiceImage(service.getServiceImage());
 
             // ⚡ Récupérer seulement les IDs des prestataires pour éviter lazy-loading et cycles
-            dto.setPrestateurIds(
-                    service.getPrestateurs().stream()
-                            .map(Prestateur::getIdUtilisateur)
-                            .toList()
-            );
+//            dto.setPrestateurIds(
+//                    service.getPrestateurs().stream()
+//                            .map(Prestateur::getIdUtilisateur)
+//                            .toList()
+//            );
 
             return dto;
         }).toList();
@@ -100,6 +98,14 @@ public Service addService(String serviceJson, MultipartFile file) throws IOExcep
 
 
     // Update service
+
+    // getting the service with the name of the role as a try here
+    @Override
+    public List<Prestateur> getPrestateursByServiceName(String serviceName) {
+        return prestateurRepository.findByRolesIgnoreCase(serviceName);
+    }
+
+
 
 
 }

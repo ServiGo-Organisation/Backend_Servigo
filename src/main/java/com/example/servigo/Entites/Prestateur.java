@@ -13,11 +13,12 @@ import java.util.Set;
 public class Prestateur extends Utilisateur {
     private double solde;
 
-    @ManyToMany
-    @JoinTable(
-            name = "prestateur_service",
-            joinColumns = @JoinColumn(name = "prestateur_id"),
-            inverseJoinColumns = @JoinColumn(name = "service_id")
-    )
-    private Set<Service> services = new HashSet<>();
+//    @ManyToMany
+//    @JoinTable(
+//            name = "prestateur_service",
+//            joinColumns = @JoinColumn(name = "prestateur_id"),
+//            inverseJoinColumns = @JoinColumn(name = "service_id")
+//    )
+//    private Set<Service> services = new HashSet<>();
+    private String roles;
 }

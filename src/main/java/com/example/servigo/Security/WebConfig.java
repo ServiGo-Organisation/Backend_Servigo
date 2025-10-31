@@ -25,7 +25,7 @@ public class WebConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**") // autorise toutes les routes
-                        .allowedOrigins("http://192.168.43.43::8087") // adresse front-end
+                        .allowedOrigins("http://192.168.1.17::8087") // adresse front-end
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // méthodes autorisées
                         .allowedHeaders("*") // autorise tous les headers
                         .allowCredentials(true); // autoriser cookies et authentification

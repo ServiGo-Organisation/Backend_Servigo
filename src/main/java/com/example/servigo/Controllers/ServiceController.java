@@ -1,8 +1,10 @@
 package com.example.servigo.Controllers;
 
 import com.example.servigo.DTOs.ServiceDTO;
+import com.example.servigo.Entites.Prestateur;
 import com.example.servigo.Entites.Service;
 import com.example.servigo.Services.Service.ServicesServiceInterface;
+import com.example.servigo.Services.Utilisateur.UtilisateurServiceInterface;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import java.util.List;
 public class ServiceController {
 
     ServicesServiceInterface servicesServiceInterface;
+    UtilisateurServiceInterface utilisateurServiceInterface;
     @PostMapping("/addService")
     public ResponseEntity<String> addService(
             @RequestPart("service") String serviceJson,
@@ -43,6 +46,16 @@ public class ServiceController {
                     .body(null);
         }
     }
+
+
+    // getting here the name of service and show the prestataire avec ce role just for tries
+    @GetMapping("/serviceName/{nomService}")
+    public ResponseEntity<List<Prestateur>> getPrestateursByRoleName(@PathVariable String nomService) {
+        List<Prestateur> prestateurs=servicesServiceInterface.getPrestateursByServiceName(nomService);
+        return ResponseEntity.ok(prestateurs);
+    }
+
+    // affecter a un prestateur un role (partie adim apres confirmation)
 
 
 }

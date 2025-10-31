@@ -1,6 +1,7 @@
 package com.example.servigo.Controllers;
 
 import com.example.servigo.DTOs.UpdateTypeRequest;
+import com.example.servigo.Entites.Prestateur;
 import com.example.servigo.Entites.Utilisateur;
 import com.example.servigo.Enums.TypeUtilisateur;
 import com.example.servigo.Services.Utilisateur.UtilisateurServiceInterfaceImpl;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -112,7 +114,38 @@ public class UtilisateurController {
         }
     }
 
+    // change the status of the user perstateur
+    @GetMapping("/changeStatus")
+    public ResponseEntity<String> changeStatus(@RequestParam Long idPrestateur)
+    {
+        utilisateurServiceInterface.status(idPrestateur);
+        return ResponseEntity.ok("changed status good ;)");
+    }
 
+    // getting prestateur by ville / status is onlice et service
+    @GetMapping("/ville")
+    public ResponseEntity<List<Prestateur>> getPrestateursByVille(@RequestParam String ville) {
+        List<Prestateur> prestateurs = utilisateurServiceInterface.getPrestateursByVille(ville);
 
+        if (prestateurs.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(prestateurs);
+    }
+
+    @GetMapping("/ville_service_statusOnline")
+    public ResponseEntity<List<Prestateur>> getPrestateursByVilleAndService(
+            @RequestParam String ville,
+            @RequestParam String service
+    ) {
+        List<Prestateur> prestateurs = utilisateurServiceInterface.getPrestateursByVilleAndService(ville, service);
+
+        if (prestateurs.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(prestateurs);
+    }
 
 }

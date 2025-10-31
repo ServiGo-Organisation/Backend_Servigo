@@ -1,7 +1,10 @@
 package com.example.servigo.Security;
 
+import com.example.servigo.Entites.Utilisateur;
+import com.example.servigo.Repositories.UtilisateurRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -33,6 +36,9 @@ public class SecurityController {
     private CustomUserDetailsService customUserDetailsService;
     @Autowired
     private OAuth2AuthorizedClientService authorizedClientService;
+    @Autowired
+    UtilisateurRepository utilisateurRepository;
+
     @GetMapping("/profile")
     public String getUserProfile(OAuth2AuthenticationToken authentication) {
         // Récupérer l'ID de la connexion OAuth2 (par exemple, "google")
@@ -70,10 +76,27 @@ public class SecurityController {
                         JwsHeader.with(MacAlgorithm.HS512).build(),
                         jwtClaimsSet
                 );
+        Utilisateur utilisateur = utilisateurRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+        utilisateur.set_online(true);
+        utilisateurRepository.save(utilisateur);
 
         String jwt=jwtEncoder.encode(jwtEncoderParameters).getTokenValue();
         return Map.of("accessToken",jwt);
     }
+
+
+    @PostMapping("/logout/{userId}")
+    public ResponseEntity<Map<String, String>> logout(@PathVariable Long userId) {
+        Utilisateur utilisateur = utilisateurRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+
+        utilisateur.set_online(false); // L'utilisateur est maintenant hors ligne
+        utilisateurRepository.save(utilisateur);
+
+        return ResponseEntity.ok(Map.of("message", "Utilisateur déconnecté avec succès"));
+    }
+
 
 
 

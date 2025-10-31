@@ -19,6 +19,7 @@ public class Service {
     private String description;
     private String serviceImage;
 
-    @ManyToMany(mappedBy = "services")
-    private Set<Prestateur> prestateurs = new HashSet<>();
+//    @ManyToMany(mappedBy = "services")
+//    private Set<Prestateur> prestateurs = new HashSet<>();
+
 }

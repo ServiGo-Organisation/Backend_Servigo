@@ -17,6 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 @AllArgsConstructor
@@ -106,6 +108,23 @@ public class UtilisateurServiceInterfaceImpl implements UtilisateurServiceInterf
     @Override
     public Utilisateur getUserInformations(Long idUtilisateur) {
         return utilisateurRepository.findByIdUtilisateur(idUtilisateur);
+    }
+
+    @Override
+    public void status(Long idPrestateur){
+        Utilisateur utilisateur = utilisateurRepository.findByIdUtilisateur(idPrestateur);
+        utilisateur.set_online(!utilisateur.is_online());
+        utilisateurRepository.save(utilisateur);
+    }
+
+    @Override
+    public List<Prestateur> getPrestateursByVille(String ville) {
+        return prestateurRepository.findByVille(ville);
+    }
+
+    @Override
+    public List<Prestateur> getPrestateursByVilleAndService(String ville, String service) {
+        return prestateurRepository.findOnlinePrestateursByVilleAndService(ville, service);
     }
 
 

@@ -79,8 +79,8 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOrigins(List.of(
-                "http://192.168.43.43:19000",  // Expo Go (mobile)
-                "http://192.168.43.43:8081",  // Si tu testes le front dans le navigateur
+                "http://192.168.1.17:19000",  // Expo Go (mobile)
+                "http://192.168.1.17:8081",  // Si tu testes le front dans le navigateur
                 "http://localhost:5173"       // Pour tests local React/Vite
         ));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
